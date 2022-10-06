@@ -9,7 +9,6 @@ on:
 
 jobs:
   deploy:
-
     if: github.event.pull_request.merged == true && github.ref == 'breakme' && github.repository_owner == 'natefoo'
     name: Deploy rewrite function
     runs-on: ubuntu-latest
