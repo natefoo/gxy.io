@@ -8,6 +8,14 @@ on:
       - 'templates/lambda_function.py.j2'
 
 jobs:
+  context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
   deploy:
     #if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'galaxyproject' }}
     if: github.event.pull_request.merged == true && github.ref == 'refs/heads/breakme'
