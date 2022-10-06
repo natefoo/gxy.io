@@ -3,14 +3,14 @@ on:
   pull_request:
     types:
       - closed
-    #paths:
-    #  - 'group_vars/**'
-    #  - 'templates/lambda_function.py.j2'
+    paths:
+      - 'group_vars/**'
+      - 'templates/lambda_function.py.j2'
 
 jobs:
   deploy:
     #if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'galaxyproject' }}
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && github.ref == 'refs/heads/breakme'
     name: Deploy rewrite function
     runs-on: ubuntu-latest
     #needs: check
