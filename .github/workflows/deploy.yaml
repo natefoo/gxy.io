@@ -3,9 +3,9 @@ on:
   pull_request:
     types:
       - closed
-    paths:
-      - 'group_vars/**'
-      - 'templates/lambda_function.py.j2'
+    #paths:
+    #  - 'group_vars/**'
+    #  - 'templates/lambda_function.py.j2'
 
 jobs:
   deploy:
@@ -15,6 +15,9 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
+
+      - name: Install boto3
+        run: pip install boto3
 
       - name: Run deploy
         run: ansible-playbook -i hosts lambda.yaml
