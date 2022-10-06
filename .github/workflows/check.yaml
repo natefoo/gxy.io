@@ -22,7 +22,7 @@ jobs:
       - name: Collect tapview output
         if: success() || failure()
         run: |
-          echo 'TEST_OUTPUT<<EOF' >> $GITHUB_ENV
+          echo 'TEST_RESULTS<<EOF' >> $GITHUB_ENV
           cat test-results.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
