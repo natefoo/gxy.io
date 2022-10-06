@@ -1,10 +1,11 @@
 name: Deploy
-on:
-  workflow_run:
-    workflows: ["Check"]
-    #branches: [main]
-    types:
-      - completed
+on: [push, pull_request]
+#on:
+#  workflow_run:
+#    workflows: ["Check"]
+#    #branches: [main]
+#    types:
+#      - completed
     #paths:
     #  - 'group_vars/**'
     #  - 'templates/lambda_function.py.j2'
