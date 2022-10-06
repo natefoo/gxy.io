@@ -17,12 +17,14 @@ jobs:
 
       - name: Run tapview
         if: success() || failure()
-        run: cat test-results.tap | ./.ci/tapview > test-results.txt
+        run: cat test-results.tap | ./.ci/tapview | tee test-results.txt
 
       - name: Collect tapview output
-        id: test-results
         if: success() || failure()
-        run: echo "::set-output name=results::$(cat test-results.txt)"
+        run: |
+          echo 'TEST_OUTPUT<<EOF' >> $GITHUB_ENV
+          cat test-results.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
       - uses: actions/github-script@v1
         if: (success() || failure()) && github.event_name == 'pull_request'
@@ -33,5 +35,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{ steps.test-results.outputs.results }}'
+              body: '${{ env.TEST_RESULTS }}'
             })
