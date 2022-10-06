@@ -1,0 +1,23 @@
+name: Deploy
+on:
+  pull_request:
+    types:
+      - closed
+    paths:
+      - 'group_vars/**'
+      - 'templates/lambda_function.py.j2'
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true && github.ref == 'breakme' && github.repository_owner == 'natefoo'
+    name: Deploy rewrite function
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Run deploy
+        run: ansible-playbook -i hosts lambda.yaml
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
