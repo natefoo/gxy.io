@@ -1,9 +1,7 @@
 name: Deploy
-
 on:
-  # the 1st condition
   workflow_run:
-    workflows: [Check]
+    workflows: ["Check"]
     #branches: [main]
     types:
       - completed
