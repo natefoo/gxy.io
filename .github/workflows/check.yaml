@@ -1,0 +1,33 @@
+name: Check
+on: [push, pull_request]
+jobs:
+  test:
+    name: Check rewrite function
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run check
+        run: ansible-playbook -i hosts check.yaml
+
+      - name: Run tapview
+        id: tapview
+        if: success() || failure()
+        run: echo "::set-output name=tapview::$(cat test-results.tap | ./.ci/tapview)"
+
+      - uses: actions/github-script@v1
+        if: (success() || failure()) && github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '${{ steps.tapview.outputs.tapview }}'
+            })
